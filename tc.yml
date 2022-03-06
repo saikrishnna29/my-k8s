@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: "2022-03-05T19:27:59Z"
+  generation: 1
+  labels:
+    app: tc
+  name: tc
+  namespace: default
+  resourceVersion: "68465"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/tc
+  uid: 50d87e83-0306-4431-8208-0195e0d5a539
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: tc
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: tc
+    spec:
+      containers:
+      - image: tomcat
+        imagePullPolicy: IfNotPresent
+        name: tomcat
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2022-03-05T19:30:58Z"
+  labels:
+    app: tc
+  name: tc
+  namespace: default
+  resourceVersion: "68741"
+  selfLink: /api/v1/namespaces/default/services/tc
+  uid: 26eb8e3d-3294-4205-9206-8e7c53118798
+spec:
+  clusterIP: 100.64.47.56
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 30274
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: tc
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
