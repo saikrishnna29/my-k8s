@@ -1,3 +1,4 @@
+#!/bin/bash
 sudo yum update -y
 #Installs helm 3.8.0
 wget https://get.helm.sh/helm-v3.8.0-linux-amd64.tar.gz \ 
