@@ -37,6 +37,3 @@ helm repo add grafana https://grafana.github.io/helm-charts &&
 helm repo update && 
 helm search repo grafana 
 helm show values grafana/loki-stack >> $PWD/loki-stack-values.yaml # Edit the values for custom options
-
-helm install loki-stack grafana/loki-stack --values loki-stack-values.yaml -n loki --create-namespace
-helm list -n loki && kubectl get all -n loki 
