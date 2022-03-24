@@ -40,3 +40,6 @@ kops edit cluster apsouth1.dev.my-k8s.com #To edit cluster for example adding ad
 kops edit ig --name apsouth1.dev.my-k8s.com nodes-ap-south-1b #To scale our nodes
 ssh -i ~/.ssh/id_rsa ubuntu@api.apsouth1.dev.my-k8s.com #To login to the master node
 kubectl get nodes #Will list out the nodes 
+
+#To delete cluster
+kops delete cluster apsouth1.dev.my-k8s.com --yes
