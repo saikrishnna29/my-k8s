@@ -20,11 +20,7 @@ sudo mv /tmp/eksctl /usr/local/bin
 if [ $? -eq "0" ]
 then
 echo "*** eksctl is installed successfully ***"
-<<<<<<< HEAD
-else
-=======
 else 
->>>>>>> 0ac85832ef851e4ff635246d1f10244569e8ea70
 echo "*** Failed to install eksctl ***"
 fi
 
@@ -33,13 +29,8 @@ curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.21.2/2021-07-05/
 chmod +x ./kubectl
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
 echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
-<<<<<<< HEAD
-kubectl version --short --client
-if [ $? -eq "0"]
-=======
 kubectl version --short --client 
 if [ $? -eq "0" ]
->>>>>>> 0ac85832ef851e4ff635246d1f10244569e8ea70
 then
 echo "*** kubectl is installed successfully ***"
 else
@@ -52,8 +43,6 @@ helm repo add grafana https://grafana.github.io/helm-charts &&
 helm repo update && 
 helm search repo grafana 
 helm show values grafana/loki-stack >> $PWD/loki-stack-values.yaml # Edit the values for custom options
-<<<<<<< HEAD
 
-=======
->>>>>>> 0ac85832ef851e4ff635246d1f10244569e8ea70
+
 #grafana username-admin and password can be found by running kubectl get secret -n loki loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
