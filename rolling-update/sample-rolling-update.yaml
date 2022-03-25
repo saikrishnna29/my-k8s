@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: httpd-deploy
+  name: httpd-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: httpd-deploy
+  strategy: 
+   rollingUpdate:
+     maxSurge: 1
+     maxUnavailable: 1
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: httpd-deploy
+    spec:
+      containers:
+      - image: httpd
+        name: httpd
+        resources: {}
+        readinessProbe: 
+         periodSeconds: 1
+         successThreshold: 5
+         httpGet:
+           path: /
+           port: 80
+        livenessProbe:
+         httpGet:
+          path: /
+          port: 80
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: httpd-deploy
+  name: httpd-deploy
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: httpd-deploy
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+---
+
+  apiVersion: autoscaling/v2beta1
+  kind: HorizontalPodAutoscaler
+  metadata:
+   name: httpd-hpa
+  spec:
+   scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: httpd-deploy
+   minReplicas: 2
+   maxReplicas: 5
+   metrics:
+    - type: Resource
+      resource:
+       name: cpu
+       targetAverageUtilization: 20
+    - type: Resource
+      resource:
+       name: memory
+       targetAverageUtilization: 20
