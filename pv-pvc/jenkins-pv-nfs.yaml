@@ -1,0 +1,16 @@
+#Using nfs with aws ebs volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfsvol
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: "3.108.219.155" #This is the public IP of nfs-server. It might be different for you.
+    path: "/nfsvol"

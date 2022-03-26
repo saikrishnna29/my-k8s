@@ -1,0 +1,76 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths: 
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jenkins-svc
+            port:
+              number: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins
+  labels:
+    app: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+      type: master
+      service: jenkins-svc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jenkins
+        type: master
+        service: jenkins-svc
+    spec:
+      containers:
+      - name: jenkins
+        image: jenkins/jenkins
+        volumeMounts: 
+        - name: nfsvol
+          mountPath: /var/jenkins_home
+        resources: {}
+      volumes:
+      - name: nfsvol
+        persistentVolumeClaim:
+          claimName: nfsvol
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+  labels:
+    app: jenkins
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: jenkins
+    service: jenkins-svc
+  type: ClusterIP
+status:
+  loadBalancer: {}
