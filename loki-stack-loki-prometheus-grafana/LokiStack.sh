@@ -43,4 +43,6 @@ helm repo add grafana https://grafana.github.io/helm-charts &&
 helm repo update && 
 helm search repo grafana 
 helm show values grafana/loki-stack >> $PWD/loki-stack-values.yaml # Edit the values for custom options
+
+
 #grafana username-admin and password can be found by running kubectl get secret -n loki loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo

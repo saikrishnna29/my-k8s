@@ -14,4 +14,4 @@ spec:
           containers:
           - name: echo
             image: busybox
-            command: ["echo", "Triggered by a CronJob"] # Check for logs of pod to see the output
+            command: ["echo", "Triggered by a CronJob"] # Check for logs of pod to see the output kubectl logs pod <pod-name>
